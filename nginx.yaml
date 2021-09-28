@@ -1,3 +1,13 @@
+
+# Default label of eks zone
+# labels:  
+#   failure-domain.beta.kubernetes.io/region: us-east-1
+#   failure-domain.beta.kubernetes.io/zone: us-east-1a
+#   kubernetes.io/hostname: ip-10-10-10-10.ec2.internal...
+#   kubernetes.io/os: linux
+#   topology.ebs.csi.aws.com/zone: us-east-1a
+#   topology.kubernetes.io/region: us-east-1
+#   topology.kubernetes.io/zone: us-east-1a
 ---
 apiVersion: v1
 kind: Service
@@ -39,6 +49,13 @@ spec:
       labels:
         app: nginx-app
     spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            foo: ba
       containers:
       - image: nginx
         name: nginx
