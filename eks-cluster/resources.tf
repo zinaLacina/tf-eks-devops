@@ -148,9 +148,9 @@ resource "aws_eks_node_group" "eks_cluster_nodegroup_ondemand" {
   }
 
   scaling_config {
-    desired_size = 1
+    desired_size = 2
     max_size     = 4
-    min_size     = 1
+    min_size     = 2
   }
 
   # taint {
@@ -169,36 +169,36 @@ resource "aws_eks_node_group" "eks_cluster_nodegroup_ondemand" {
 
 
 # spot instance worker node
-resource "aws_eks_node_group" "eks_cluster_nodegroup_spot" {
-  cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = "eks_cluster_nodegroup_spot"
-  node_role_arn   = aws_iam_role.eks_cluster_worker_role.arn
-  subnet_ids      = data.aws_subnet_ids.cluster_subnet_ids.ids
-  capacity_type = "SPOT"
-  scaling_config {
-    desired_size = 1
-    max_size     = 4
-    min_size     = 1
-  }
+# resource "aws_eks_node_group" "eks_cluster_nodegroup_spot" {
+#   cluster_name    = aws_eks_cluster.cluster.name
+#   node_group_name = "eks_cluster_nodegroup_spot"
+#   node_role_arn   = aws_iam_role.eks_cluster_worker_role.arn
+#   subnet_ids      = data.aws_subnet_ids.cluster_subnet_ids.ids
+#   capacity_type = "SPOT"
+#   scaling_config {
+#     desired_size = 1
+#     max_size     = 4
+#     min_size     = 1
+#   }
 
-  # taint {
-  #   key = "key1"
-  #   value = "value1"
-  #   effect = "NO_SCHEDULE"
-  # }
+#   # taint {
+#   #   key = "key1"
+#   #   value = "value1"
+#   #   effect = "NO_SCHEDULE"
+#   # }
 
-  instance_types = [ "t2.micro", "t3.micro" ]
+#   instance_types = [ "t2.micro", "t3.micro" ]
    
-  labels = {
-    type_of_nodegroup = "spot_untainted"
+#   labels = {
+#     type_of_nodegroup = "spot_untainted"
   
 
-  }
+#   }
 
-  depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster_attach_policy_to_worker_role
-  ]
-}
+#   depends_on = [
+#     aws_iam_role_policy_attachment.eks_cluster_attach_policy_to_worker_role
+#   ]
+# }
 
 
 
